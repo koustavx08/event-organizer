@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, User, Users, CheckCircle, Clock, XCircle, Star } from "lucide-react"
 import { KolkataEventFilters, type KolkataEventFilters as EventFiltersType } from "@/components/kolkata-event-filters"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 interface Event {
   _id: string
@@ -180,7 +179,6 @@ export default function KolkataEventsPage() {
               >
                 Dashboard
               </Link>
-              <ThemeToggle />
               <Link href="/login">
                 <Button
                   variant="outline"

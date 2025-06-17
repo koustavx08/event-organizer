@@ -53,8 +53,8 @@ A full-featured event management platform built with Next.js, MongoDB, and moder
 
 ### 1. Clone the Repository
 \`\`\`bash
-git clone https://github.com/yourusername/eventhub.git
-cd eventhub
+git clone https://github.com/koustavx08/event-organizer.git
+cd event-organizer
 \`\`\`
 
 ### 2. Install Dependencies
@@ -218,7 +218,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/yourusername/eventhub/issues) page
+1. Check the [Issues](https://github.com/koustavx08/event-organizer/issues) page
 2. Create a new issue with detailed information
 3. Join our [Discord community](https://discord.gg/eventhub)
 
@@ -256,4 +256,4 @@ If you encounter any issues or have questions:
 
 **Built with ❤️ by the EventHub Team**
 
-For more information, visit our [website](https://eventhub.example.com) or follow us on [Twitter](https://twitter.com/eventhub).
+For more information, visit our [website](https://eventhub.example.com).

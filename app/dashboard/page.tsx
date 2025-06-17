@@ -33,7 +33,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { QRScannerDialog } from "@/components/qr-scanner-dialog"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 interface Event {
   _id: string
@@ -199,7 +198,6 @@ export default function DashboardPage() {
                   Browse Events
                 </Button>
               </Link>
-              <ThemeToggle />
               <Button
                 variant="ghost"
                 onClick={handleLogout}

@@ -14,7 +14,6 @@ import { RSVPDialog } from "@/components/rsvp-dialog"
 import { QRTicketDialog } from "@/components/qr-ticket-dialog"
 import { SEOHead } from "@/components/seo-head"
 import { SocialShare } from "@/components/social-share"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 interface Event {
   _id: string
@@ -214,7 +213,6 @@ export default function KolkataEventDetailPage() {
               >
                 Dashboard
               </Link>
-              <ThemeToggle />
             </nav>
           </div>
         </div>
