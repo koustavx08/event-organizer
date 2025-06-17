@@ -1,6 +1,6 @@
-# EventHub - Event Organizer Web Application
+# Kolkata Events – Event Organizer Web Application
 
-A full-featured event management platform built with Next.js, MongoDB, and modern web technologies. Create, manage, and discover amazing events with ease.
+A modern, full-featured event management platform built with Next.js, MongoDB, and Tailwind CSS. Effortlessly create, manage, and discover events in Kolkata.
 
 ## 🚀 Features
 
@@ -15,8 +15,10 @@ A full-featured event management platform built with Next.js, MongoDB, and moder
 - **Rich Event Details**: Name, date, location, description, category, and images
 - **Image Upload**: Base64 image storage (easily extensible to cloud storage)
 - **Categories**: Organized event categorization
-- **Search & Filter**: Advanced filtering by category, date, and search terms
+- **Search & Filter**: Advanced filtering by category, date, area, and search terms
 - **Event Status**: Automatic upcoming/past event detection
+- **RSVP & QR Tickets**: RSVP to events and get QR code tickets
+- **Admin Panel**: Manage users, events, and view stats
 
 ### User Experience
 - **Intuitive Interface**: Clean, modern design with shadcn/ui components
@@ -52,54 +54,54 @@ A full-featured event management platform built with Next.js, MongoDB, and moder
 - Git
 
 ### 1. Clone the Repository
-\`\`\`bash
-git clone https://github.com/koustavx08/event-organizer.git
-cd event-organizer
-\`\`\`
+```bash
+git clone https://github.com/your-username/kolkata-events.git
+cd kolkata-events
+```
 
 ### 2. Install Dependencies
-\`\`\`bash
-npm install
+```bash
+pnpm install
 # or
 yarn install
 # or
-pnpm install
-\`\`\`
+npm install
+```
 
 ### 3. Environment Setup
-Create a \`.env.local\` file in the root directory:
+Create a `.env.local` file in the root directory:
 
-\`\`\`env
+```env
 # MongoDB Configuration
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/eventhub?retryWrites=true&w=majority
-MONGODB_DB=eventhub
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/kolkataevents?retryWrites=true&w=majority
+MONGODB_DB=kolkataevents
 
 # JWT Secret (generate a strong random string)
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-\`\`\`
+```
 
 ### 4. MongoDB Atlas Setup
 1. Create a free account at [MongoDB Atlas](https://www.mongodb.com/atlas)
 2. Create a new cluster
 3. Create a database user
 4. Whitelist your IP address
-5. Get your connection string and update \`MONGODB_URI\`
+5. Get your connection string and update `MONGODB_URI`
 
 ### 5. Run the Development Server
-\`\`\`bash
-npm run dev
+```bash
+pnpm dev
 # or
 yarn dev
 # or
-pnpm dev
-\`\`\`
+npm run dev
+```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🗄️ Database Schema
 
 ### Users Collection
-\`\`\`javascript
+```javascript
 {
   _id: ObjectId,
   name: String,
@@ -107,10 +109,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
   password: String (hashed),
   createdAt: Date
 }
-\`\`\`
+```
 
 ### Events Collection
-\`\`\`javascript
+```javascript
 {
   _id: ObjectId,
   name: String,
@@ -123,21 +125,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
   createdAt: Date,
   updatedAt: Date
 }
-\`\`\`
+```
 
 ## 🔐 API Endpoints
 
 ### Authentication
-- \`POST /api/auth/register\` - User registration
-- \`POST /api/auth/login\` - User login
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
 
 ### Events
-- \`GET /api/events\` - Get all events (public)
-- \`POST /api/events\` - Create event (authenticated)
-- \`GET /api/events/my-events\` - Get user's events (authenticated)
-- \`GET /api/events/[id]\` - Get single event (public)
-- \`PUT /api/events/[id]\` - Update event (authenticated, owner only)
-- \`DELETE /api/events/[id]\` - Delete event (authenticated, owner only)
+- `GET /api/events` - Get all events (public)
+- `POST /api/events` - Create event (authenticated)
+- `GET /api/events/my-events` - Get user's events (authenticated)
+- `GET /api/events/[id]` - Get single event (public)
+- `PUT /api/events/[id]` - Update event (authenticated, owner only)
+- `DELETE /api/events/[id]` - Delete event (authenticated, owner only)
 
 ## 🚀 Deployment
 
@@ -160,54 +162,55 @@ The application can be deployed on any platform that supports Next.js:
 Currently using base64 encoding for images. To use cloud storage:
 
 1. **Cloudinary Integration**:
-\`\`\`javascript
-// Add to .env.local
+```env
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
-\`\`\`
+```
 
 2. **AWS S3 Integration**:
-\`\`\`javascript
-// Add to .env.local
+```env
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
 AWS_REGION=your-region
 AWS_S3_BUCKET=your-bucket-name
-\`\`\`
+```
 
 ### Email Notifications
 Add email service integration:
-\`\`\`javascript
-// Add to .env.local
+```env
 SMTP_HOST=your-smtp-host
 SMTP_PORT=587
 SMTP_USER=your-email
 SMTP_PASS=your-password
-\`\`\`
+```
 
 ## 🧪 Testing
 
 ### Run Tests
-\`\`\`bash
-npm run test
+```bash
+pnpm test
 # or
 yarn test
-\`\`\`
+# or
+npm run test
+```
 
 ### Test Coverage
-\`\`\`bash
-npm run test:coverage
+```bash
+pnpm test:coverage
 # or
 yarn test:coverage
-\`\`\`
+# or
+npm run test:coverage
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (\`git checkout -b feature/amazing-feature\`)
-3. Commit your changes (\`git commit -m 'Add amazing feature'\`)
-4. Push to the branch (\`git push origin feature/amazing-feature\`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ## 📝 License
@@ -220,7 +223,6 @@ If you encounter any issues or have questions:
 
 1. Check the [Issues](https://github.com/koustavx08/event-organizer/issues) page
 2. Create a new issue with detailed information
-3. Join our [Discord community](https://discord.gg/eventhub)
 
 ## 🗺️ Roadmap
 
@@ -254,6 +256,4 @@ If you encounter any issues or have questions:
 
 ---
 
-**Built with ❤️ by the EventHub Team**
-
-For more information, visit our [website](https://eventhub.example.com).
+**Built with ❤️ by [Koustav Singh](https://koustavx08.vercel.app)**
