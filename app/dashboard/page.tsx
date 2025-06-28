@@ -134,21 +134,21 @@ export default function DashboardPage() {
     switch (status) {
       case "upcoming":
         return (
-          <Badge className="bg-green-100 text-green-800 border-green-200">
+          <Badge className="bg-green-100 text-green-800 border-green-200 font-medium">
             <Clock className="h-3 w-3 mr-1" />
             Upcoming
           </Badge>
         )
       case "completed":
         return (
-          <Badge className="bg-blue-100 text-blue-800 border-blue-200">
+          <Badge className="bg-blue-100 text-blue-800 border-blue-200 font-medium">
             <CheckCircle className="h-3 w-3 mr-1" />
             Completed
           </Badge>
         )
       case "cancelled":
         return (
-          <Badge className="bg-red-100 text-red-800 border-red-200">
+          <Badge className="bg-red-100 text-red-800 border-red-200 font-medium">
             <XCircle className="h-3 w-3 mr-1" />
             Cancelled
           </Badge>
@@ -185,8 +185,10 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-indigo-600 mr-2" />
-              <h1 className="text-2xl font-bold text-gray-900">EventHub</h1>
+              <div className="relative p-2 bg-gradient-to-br from-orange-100 to-green-100 rounded-xl mr-3">
+                <Calendar className="h-8 w-8 text-orange-600" />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-green-600 bg-clip-text text-transparent">Kolkata Events</h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-700 font-medium">Welcome, {user?.name}</span>
@@ -211,80 +213,92 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Dashboard Header */}
         <motion.div
-          className="mb-8"
+          className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-gray-900">My Dashboard</h2>
-          <p className="text-gray-600 dark:text-gray-300">Manage your events and track their performance</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">My Dashboard</h2>
+          <p className="text-xl text-gray-700">Manage your events and track their performance</p>
+          <div className="mt-4 w-24 h-1 bg-gradient-to-r from-orange-400 to-green-400 rounded-full"></div>
         </motion.div>
 
         {/* Stats Cards */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <Card className="gradient-card border-orange-200/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Events</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+          <Card className="gradient-card border-orange-200/50 hover:shadow-lg transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-700">Total Events</CardTitle>
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <Calendar className="h-5 w-5 text-orange-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{events.length}</div>
-              <p className="text-xs text-muted-foreground">Events you've created</p>
+              <div className="text-3xl font-bold text-gray-900">{events.length}</div>
+              <p className="text-sm text-gray-600 mt-1">Events you've created</p>
             </CardContent>
           </Card>
 
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total RSVPs</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+          <Card className="gradient-card border-orange-200/50 hover:shadow-lg transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-700">Total RSVPs</CardTitle>
+              <div className="p-2 bg-orange-100 rounded-lg">
+                <Users className="h-5 w-5 text-orange-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalRSVPs}</div>
-              <p className="text-xs text-muted-foreground">People registered</p>
+              <div className="text-3xl font-bold text-gray-900">{totalRSVPs}</div>
+              <p className="text-sm text-gray-600 mt-1">People registered</p>
             </CardContent>
           </Card>
 
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Checked In</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          <Card className="gradient-card border-orange-200/50 hover:shadow-lg transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-700">Checked In</CardTitle>
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalCheckedIn}</div>
-              <p className="text-xs text-muted-foreground">Attendees checked in</p>
+              <div className="text-3xl font-bold text-gray-900">{totalCheckedIn}</div>
+              <p className="text-sm text-gray-600 mt-1">Attendees checked in</p>
             </CardContent>
           </Card>
 
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+          <Card className="gradient-card border-orange-200/50 hover:shadow-lg transition-all duration-300">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-gray-700">Upcoming Events</CardTitle>
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Clock className="h-5 w-5 text-blue-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{upcomingEvents.length}</div>
-              <p className="text-xs text-muted-foreground">Events scheduled ahead</p>
+              <div className="text-3xl font-bold text-gray-900">{upcomingEvents.length}</div>
+              <p className="text-sm text-gray-600 mt-1">Events scheduled ahead</p>
             </CardContent>
           </Card>
         </motion.div>
 
         {/* Create Event Button */}
         <motion.div
-          className="mb-6"
+          className="mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Link href="/create-event">
-            <Button size="lg">
-              <Plus className="mr-2 h-4 w-4" />
+            <Button 
+              size="lg" 
+              className="btn-primary text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Plus className="mr-3 h-6 w-6" />
               Create New Event
             </Button>
           </Link>
@@ -292,21 +306,27 @@ export default function DashboardPage() {
 
         {/* Events List */}
         <motion.div
-          className="space-y-6"
+          className="space-y-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <h3 className="text-xl font-semibold text-gray-900">Your Events</h3>
+          <div className="flex items-center">
+            <h3 className="text-2xl font-bold text-gray-900">Your Events</h3>
+            <div className="ml-4 h-px bg-gradient-to-r from-orange-400 to-green-400 flex-1"></div>
+          </div>
 
           {events.length === 0 ? (
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardContent className="text-center py-12">
-                <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No events yet</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">Get started by creating your first event</p>
+            <Card className="gradient-card border-orange-200/50 text-center">
+              <CardContent className="py-16">
+                <div className="relative mb-6">
+                  <Calendar className="h-16 w-16 text-orange-400 mx-auto" />
+                  <div className="absolute inset-0 glow-orange rounded-full opacity-30"></div>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">No events yet</h3>
+                <p className="text-gray-600 mb-6">Get started by creating your first event</p>
                 <Link href="/create-event">
-                  <Button>
+                  <Button className="btn-primary px-8 py-3 text-lg font-medium rounded-xl">
                     <Plus className="mr-2 h-4 w-4" />
                     Create Event
                   </Button>
@@ -314,7 +334,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.map((event, index) => (
                 <motion.div
                   key={event._id}
@@ -322,53 +342,54 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
+                  className="h-full"
                 >
-                  <Card className="overflow-hidden h-full flex flex-col dark:bg-gray-800 dark:border-gray-700">
+                  <Card className="overflow-hidden h-full flex flex-col gradient-card border-orange-200/50 card-hover">
                     {event.image && (
-                      <div className="aspect-video bg-gray-200 relative">
+                      <div className="aspect-video bg-gradient-to-br from-orange-100/80 to-green-100/80 relative">
                         <img
                           src={event.image || "/placeholder.svg"}
                           alt={event.name}
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-2 right-2">{getStatusBadge(event.status)}</div>
+                        <div className="absolute top-3 right-3">{getStatusBadge(event.status)}</div>
                       </div>
                     )}
                     <CardHeader className="flex-grow">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="secondary">{event.category}</Badge>
-                        <span className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</span>
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="secondary" className="bg-orange-100 text-orange-700 border-orange-200">{event.category}</Badge>
+                        <span className="text-sm text-gray-600 font-medium">{new Date(event.date).toLocaleDateString()}</span>
                       </div>
-                      <CardTitle className="text-lg">{event.name}</CardTitle>
-                      <CardDescription className="flex items-center text-gray-600 dark:text-gray-300">
-                        <MapPin className="h-4 w-4 mr-1" />
+                      <CardTitle className="text-xl font-bold text-gray-900">{event.name}</CardTitle>
+                      <CardDescription className="flex items-center text-gray-700">
+                        <MapPin className="h-4 w-4 mr-2 text-orange-500" />
                         {event.location}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">{event.description}</p>
+                      <p className="text-gray-600 text-sm mb-6 line-clamp-2">{event.description}</p>
 
                       {/* RSVP Stats */}
-                      <div className="flex items-center justify-between mb-4 text-sm">
-                        <div className="flex items-center text-blue-600">
-                          <Users className="h-4 w-4 mr-1" />
-                          <span>{event.rsvpCount || 0} RSVPs</span>
+                      <div className="flex items-center justify-between mb-6 text-sm">
+                        <div className="flex items-center text-blue-600 bg-blue-50 px-3 py-2 rounded-lg">
+                          <Users className="h-4 w-4 mr-2" />
+                          <span className="font-medium">{event.rsvpCount || 0} RSVPs</span>
                         </div>
-                        <div className="flex items-center text-green-600">
-                          <CheckCircle className="h-4 w-4 mr-1" />
-                          <span>{event.checkedInCount || 0} checked in</span>
+                        <div className="flex items-center text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <span className="font-medium">{event.checkedInCount || 0} checked in</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex space-x-1">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex space-x-2">
                           <Link href={`/events/${event._id}`}>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="border-blue-200 text-blue-600 hover:bg-blue-50">
                               <Eye className="h-4 w-4" />
                             </Button>
                           </Link>
                           <Link href={`/edit-event/${event._id}`}>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="border-orange-200 text-orange-600 hover:bg-orange-50">
                               <Edit className="h-4 w-4" />
                             </Button>
                           </Link>
@@ -378,6 +399,7 @@ export default function DashboardPage() {
                               size="sm"
                               onClick={() => openScanner(event._id)}
                               title="Scan QR codes for check-in"
+                              className="border-green-200 text-green-600 hover:bg-green-50"
                             >
                               <QrCode className="h-4 w-4" />
                             </Button>
@@ -385,14 +407,14 @@ export default function DashboardPage() {
                         </div>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent className="dark:bg-gray-800 dark:border-gray-700">
+                          <AlertDialogContent className="gradient-card border-orange-200/50">
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Event</AlertDialogTitle>
-                              <AlertDialogDescription>
+                              <AlertDialogTitle className="text-gray-900">Delete Event</AlertDialogTitle>
+                              <AlertDialogDescription className="text-gray-700">
                                 Are you sure you want to delete "{event.name}"? This action cannot be undone and will
                                 also delete all RSVPs.
                               </AlertDialogDescription>
