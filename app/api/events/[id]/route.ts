@@ -75,20 +75,26 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "Event not found or you don't have permission to edit it" }, { status: 404 })
     }
 
-    const { name, date, location, description, category, image } = await request.json()
+    const { name, date, time, location, description, category, image, featured, tags, area } = await request.json()
 
     // Validation
-    if (!name || !date || !location || !description || !category) {
+    if (!name || !date || !time || !location || !description || !category) {
       return NextResponse.json({ message: "All required fields must be provided" }, { status: 400 })
     }
 
+    // Combine date and time
+    const eventDateTime = new Date(`${date}T${time}`)
+
     const updateData = {
       name,
-      date: new Date(date),
+      date: eventDateTime,
       location,
+      area: area || "",
       description,
       category,
       image: image || null,
+      featured: featured || false,
+      tags: tags || [],
       updatedAt: new Date(),
     }
 

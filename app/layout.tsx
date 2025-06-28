@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { ChatbotWidget } from "@/components/chatbot/chatbot-widget"
+import ErrorBoundary from "@/components/error-boundary"
 
 export const metadata: Metadata = {
   title: "Kolkata Events - Discover Amazing Events in the City of Joy",
@@ -17,9 +18,39 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Prevent extension errors from affecting the application
+              window.addEventListener('error', function(e) {
+                if (e.message && e.message.includes('param') && e.message.includes('not legal')) {
+                  e.preventDefault();
+                  return false;
+                }
+              });
+              
+              // Suppress console errors from extensions
+              const originalError = console.error;
+              console.error = function(...args) {
+                const message = args.join(' ');
+                if (message.includes('param') && message.includes('not legal')) {
+                  return;
+                }
+                if (message.includes('MetaMask extension not found')) {
+                  return;
+                }
+                originalError.apply(console, args);
+              };
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen gradient-bg font-sans antialiased">
-        {children}
-        <ChatbotWidget />
+        <ErrorBoundary>
+          {children}
+          <ChatbotWidget />
+        </ErrorBoundary>
       </body>
     </html>
   )

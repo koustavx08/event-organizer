@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -14,35 +14,114 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Calendar, ArrowLeft, Upload, X, MapPin, Sparkles } from "lucide-react"
-import { KolkataAIEventGenerator } from "@/components/kolkata-ai-event-generator"
+import { Calendar, ArrowLeft, Upload, X, MapPin, Edit } from "lucide-react"
 
-export default function CreateKolkataEventPage() {
+interface Event {
+  _id: string
+  name: string
+  date: string
+  time: string
+  location: string
+  area: string
+  description: string
+  category: string
+  image?: string
+  featured: boolean
+  tags: string[]
+  organizer: string
+}
+
+export default function EditEventPage() {
   const [formData, setFormData] = useState({
     name: "",
     date: "",
     time: "",
     location: "",
-    area: "", // Kolkata area
+    area: "",
     description: "",
     category: "",
     image: "",
     featured: false,
     tags: "",
   })
+  const [originalEvent, setOriginalEvent] = useState<Event | null>(null)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
+  const [fetchLoading, setFetchLoading] = useState(true)
   const [imagePreview, setImagePreview] = useState("")
   const router = useRouter()
+  const params = useParams()
+  const eventId = params.id as string
 
   useEffect(() => {
     // Check authentication
     const token = localStorage.getItem("token")
     if (!token) {
       router.push("/login")
+      return
     }
-  }, [router])
+
+    if (eventId) {
+      fetchEvent()
+    }
+  }, [router, eventId])
+
+  const fetchEvent = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      const response = await fetch(`/api/events/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const event = data.event
+
+        // Extract location parts
+        const locationParts = event.location.split(", ")
+        const venue = locationParts[0] || ""
+        const area = locationParts[1] || ""
+
+        // Extract date and time
+        const eventDate = new Date(event.date)
+        const dateStr = eventDate.toISOString().split("T")[0]
+        const timeStr = eventDate.toTimeString().split(" ")[0].substring(0, 5)
+
+        setOriginalEvent(event)
+        setFormData({
+          name: event.name,
+          date: dateStr,
+          time: timeStr,
+          location: venue,
+          area: area,
+          description: event.description,
+          category: event.category,
+          image: event.image || "",
+          featured: event.featured || false,
+          tags: event.tags ? event.tags.join(", ") : "",
+        })
+
+        if (event.image) {
+          setImagePreview(event.image)
+        }
+      } else if (response.status === 404) {
+        setError("Event not found")
+      } else if (response.status === 401) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        router.push("/login")
+      } else {
+        setError("Failed to load event")
+      }
+    } catch (error) {
+      setError("Network error. Please try again.")
+    } finally {
+      setFetchLoading(false)
+    }
+  }
 
   const categories = [
     "Cultural",
@@ -122,17 +201,6 @@ export default function CreateKolkataEventPage() {
     setImagePreview("")
   }
 
-  const handleAISuggestion = (suggestion: any) => {
-    setFormData({
-      ...formData,
-      name: suggestion.name,
-      category: suggestion.category,
-      description: suggestion.description,
-      area: suggestion.area || "",
-      tags: suggestion.tags || "",
-    })
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
@@ -175,8 +243,8 @@ export default function CreateKolkataEventPage() {
           .filter((tag) => tag),
       }
 
-      const response = await fetch("/api/events/kolkata", {
-        method: "POST",
+      const response = await fetch(`/api/events/${eventId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -187,18 +255,34 @@ export default function CreateKolkataEventPage() {
       const data = await response.json()
 
       if (response.ok) {
-        setSuccess("Event created successfully! Your event is now live in Kolkata Events.")
+        setSuccess("Event updated successfully!")
         setTimeout(() => {
           router.push("/dashboard")
         }, 2000)
       } else {
-        setError(data.message || "Failed to create event")
+        setError(data.message || "Failed to update event")
       }
     } catch (error) {
       setError("Network error. Please try again.")
     } finally {
       setLoading(false)
     }
+  }
+
+  if (fetchLoading) {
+    return (
+      <div className="min-h-screen gradient-bg flex items-center justify-center">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Calendar className="h-12 w-12 text-orange-600 mx-auto mb-4 animate-spin" />
+          <p className="text-gray-600">Loading event details...</p>
+        </motion.div>
+      </div>
+    )
   }
 
   return (
@@ -228,16 +312,14 @@ export default function CreateKolkataEventPage() {
           <Card className="border-orange-100">
             <CardHeader>
               <CardTitle className="text-2xl flex items-center">
-                <Sparkles className="h-6 w-6 text-orange-600 mr-2" />
-                Create New Event in Kolkata
+                <Edit className="h-6 w-6 text-orange-600 mr-2" />
+                Edit Event
               </CardTitle>
               <CardDescription>
-                Share your amazing event with the Kolkata community. Fill in the details below to get started.
+                Update your event details below. All changes will be reflected immediately.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <KolkataAIEventGenerator onSelectSuggestion={handleAISuggestion} />
-
               <form onSubmit={handleSubmit} className="space-y-6">
                 {error && (
                   <Alert variant="destructive">
@@ -251,74 +333,72 @@ export default function CreateKolkataEventPage() {
                   </Alert>
                 )}
 
+                {/* Event Name */}
                 <div className="space-y-2">
                   <Label htmlFor="name">Event Name *</Label>
                   <Input
                     id="name"
                     name="name"
-                    type="text"
-                    placeholder="Enter your event name"
+                    placeholder="Enter event name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="border-orange-200 focus:border-orange-400"
                     required
+                    className="border-orange-200 focus:border-orange-400"
                   />
                 </div>
 
+                {/* Date and Time */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="date">Event Date *</Label>
+                    <Label htmlFor="date">Date *</Label>
                     <Input
                       id="date"
                       name="date"
                       type="date"
                       value={formData.date}
                       onChange={handleChange}
-                      className="border-orange-200 focus:border-orange-400"
                       required
+                      className="border-orange-200 focus:border-orange-400"
                     />
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="time">Event Time *</Label>
+                    <Label htmlFor="time">Time *</Label>
                     <Input
                       id="time"
                       name="time"
                       type="time"
                       value={formData.time}
                       onChange={handleChange}
-                      className="border-orange-200 focus:border-orange-400"
                       required
+                      className="border-orange-200 focus:border-orange-400"
                     />
                   </div>
                 </div>
 
+                {/* Location and Area */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="category">Category *</Label>
-                    <Select value={formData.category} onValueChange={(value) => handleSelectChange("category", value)} required>
-                      <SelectTrigger className="border-orange-200">
-                        <SelectValue placeholder="Select event category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="location">Venue/Location *</Label>
+                    <Input
+                      id="location"
+                      name="location"
+                      placeholder="e.g., Science City Auditorium"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                      className="border-orange-200 focus:border-orange-400"
+                    />
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="area">Area in Kolkata *</Label>
-                    <Select value={formData.area} onValueChange={(value) => handleSelectChange("area", value)} required>
-                      <SelectTrigger className="border-orange-200">
+                    <Label htmlFor="area">Kolkata Area *</Label>
+                    <Select value={formData.area} onValueChange={(value) => handleSelectChange("area", value)}>
+                      <SelectTrigger className="border-orange-200 focus:border-orange-400">
                         <SelectValue placeholder="Select area in Kolkata" />
                       </SelectTrigger>
                       <SelectContent>
                         {kolkataAreas.map((area) => (
                           <SelectItem key={area} value={area}>
+                            <MapPin className="h-4 w-4 mr-2 inline" />
                             {area}
                           </SelectItem>
                         ))}
@@ -327,63 +407,61 @@ export default function CreateKolkataEventPage() {
                   </div>
                 </div>
 
+                {/* Category */}
                 <div className="space-y-2">
-                  <Label htmlFor="location">Venue/Location Details *</Label>
-                  <Input
-                    id="location"
-                    name="location"
-                    type="text"
-                    placeholder="e.g., Science City Auditorium, Rabindra Sadan, etc."
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="border-orange-200 focus:border-orange-400"
-                    required
-                  />
-                  <p className="text-sm text-gray-500">
-                    <MapPin className="h-4 w-4 inline mr-1" />
-                    This will be combined with your selected area to show:{" "}
-                    {formData.location && formData.area
-                      ? `${formData.location}, ${formData.area}, Kolkata`
-                      : "Venue, Area, Kolkata"}
-                  </p>
+                  <Label htmlFor="category">Category *</Label>
+                  <Select value={formData.category} onValueChange={(value) => handleSelectChange("category", value)}>
+                    <SelectTrigger className="border-orange-200 focus:border-orange-400">
+                      <SelectValue placeholder="Select event category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
+                {/* Description */}
                 <div className="space-y-2">
-                  <Label htmlFor="description">Event Description *</Label>
+                  <Label htmlFor="description">Description *</Label>
                   <Textarea
                     id="description"
                     name="description"
-                    placeholder="Describe your event in detail. What can attendees expect?"
+                    placeholder="Describe your event in detail..."
                     value={formData.description}
                     onChange={handleChange}
-                    rows={5}
-                    className="border-orange-200 focus:border-orange-400"
                     required
+                    rows={4}
+                    className="border-orange-200 focus:border-orange-400"
                   />
                 </div>
 
+                {/* Tags */}
                 <div className="space-y-2">
-                  <Label htmlFor="tags">Tags (Optional)</Label>
+                  <Label htmlFor="tags">Tags (optional)</Label>
                   <Input
                     id="tags"
                     name="tags"
-                    type="text"
-                    placeholder="e.g., networking, family-friendly, outdoor, free entry (comma-separated)"
+                    placeholder="Enter tags separated by commas (e.g., networking, startup, tech)"
                     value={formData.tags}
                     onChange={handleChange}
                     className="border-orange-200 focus:border-orange-400"
                   />
-                  <p className="text-sm text-gray-500">Add relevant tags to help people discover your event</p>
+                  <p className="text-sm text-gray-500">Separate multiple tags with commas</p>
                 </div>
 
+                {/* Image Upload */}
                 <div className="space-y-2">
-                  <Label htmlFor="image">Event Image</Label>
+                  <Label htmlFor="image">Event Image (optional)</Label>
                   {imagePreview ? (
-                    <div className="relative">
+                    <div className="relative inline-block">
                       <img
-                        src={imagePreview || "/placeholder.svg"}
+                        src={imagePreview}
                         alt="Event preview"
-                        className="w-full h-48 object-cover rounded-md border border-orange-200"
+                        className="w-full max-w-sm h-48 object-cover rounded-lg border border-orange-200"
                       />
                       <Button
                         type="button"
@@ -396,54 +474,47 @@ export default function CreateKolkataEventPage() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="border-2 border-dashed border-orange-300 rounded-md p-6 text-center bg-orange-50/50">
-                      <Upload className="h-8 w-8 text-orange-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600 mb-2">Upload an attractive image for your event</p>
-                      <Input id="image" type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                      <Label htmlFor="image" className="cursor-pointer">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          asChild
-                          className="border-orange-200 text-orange-600 hover:bg-orange-50"
-                        >
-                          <span>Choose Image</span>
-                        </Button>
+                    <div className="border-2 border-dashed border-orange-300 rounded-lg p-8 text-center hover:border-orange-400 transition-colors">
+                      <Upload className="h-12 w-12 text-orange-400 mx-auto mb-4" />
+                      <Label htmlFor="image-upload" className="cursor-pointer">
+                        <span className="text-orange-600 hover:text-orange-700 font-medium">
+                          Click to upload an image
+                        </span>
+                        <Input
+                          id="image-upload"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
                       </Label>
+                      <p className="text-sm text-gray-500 mt-2">PNG, JPG, GIF up to 10MB</p>
                     </div>
                   )}
                 </div>
 
+                {/* Featured Event */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="featured"
                     checked={formData.featured}
-                    onCheckedChange={(checked) => setFormData({ ...formData, featured: checked as boolean })}
-                    className="border-orange-300 data-[state=checked]:bg-orange-600"
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, featured: checked as boolean })
+                    }
                   />
-                  <Label htmlFor="featured" className="text-sm cursor-pointer">
-                    Request to feature this event (subject to admin approval)
+                  <Label htmlFor="featured" className="text-sm font-medium">
+                    Mark as featured event
                   </Label>
                 </div>
 
-                <div className="flex gap-4 pt-4">
-                  <Button
-                    type="submit"
-                    className="flex-1 bg-gradient-to-r from-orange-600 to-green-600 hover:from-orange-700 hover:to-green-700"
-                    disabled={loading}
-                  >
-                    {loading ? "Creating Event..." : "Create Event"}
-                  </Button>
-                  <Link href="/dashboard">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="border-orange-200 text-orange-600 hover:bg-orange-50"
-                    >
-                      Cancel
-                    </Button>
-                  </Link>
-                </div>
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-orange-500 to-green-500 hover:from-orange-600 hover:to-green-600"
+                  disabled={loading}
+                >
+                  {loading ? "Updating Event..." : "Update Event"}
+                </Button>
               </form>
             </CardContent>
           </Card>
