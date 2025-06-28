@@ -160,7 +160,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen gradient-bg flex items-center justify-center">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -179,9 +179,9 @@ export default function DashboardPage() {
   const upcomingEvents = events.filter((event) => event.status === "upcoming")
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen gradient-bg">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <header className="bg-white/90 backdrop-blur-lg shadow-lg border-b border-orange-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
@@ -189,11 +189,11 @@ export default function DashboardPage() {
               <h1 className="text-2xl font-bold text-gray-900">EventHub</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600 dark:text-gray-300">Welcome, {user?.name}</span>
+              <span className="text-gray-700 font-medium">Welcome, {user?.name}</span>
               <Link href="/events">
                 <Button
                   variant="outline"
-                  className="border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950"
+                  className="border-orange-300 text-orange-700 hover:bg-orange-50 hover:border-orange-400 transition-all duration-300 font-medium shadow-sm"
                 >
                   Browse Events
                 </Button>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
               <Button
                 variant="ghost"
                 onClick={handleLogout}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                className="text-gray-700 hover:text-orange-600 transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-orange-50"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -230,7 +230,7 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="gradient-card border-orange-200/50">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Events</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />

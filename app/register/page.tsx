@@ -81,15 +81,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
+      <Card className="w-full max-w-md gradient-card border-orange-200/50">
         <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <Calendar className="h-8 w-8 text-indigo-600 mr-2" />
-            <h1 className="text-2xl font-bold text-gray-900">EventHub</h1>
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative p-3 bg-gradient-to-br from-orange-100 to-green-100 rounded-xl mr-3">
+              <Calendar className="h-8 w-8 text-orange-600" />
+            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-green-600 bg-clip-text text-transparent">Kolkata Events</h1>
           </div>
-          <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Join EventHub to start creating and managing events</CardDescription>
+          <CardTitle className="text-3xl font-bold text-gray-900">Create Account</CardTitle>
+          <CardDescription className="text-gray-600 text-lg">Join Kolkata Events to start creating and managing events</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -181,7 +183,7 @@ export default function RegisterPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link href="/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
+              <Link href="/login" className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
                 Sign in
               </Link>
             </p>

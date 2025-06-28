@@ -144,30 +144,35 @@ export default function KolkataEventsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-green-50 flex items-center justify-center">
+      <div className="min-h-screen gradient-bg flex items-center justify-center">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Calendar className="h-12 w-12 text-orange-600 mx-auto mb-4 animate-spin" />
-          <p className="text-gray-600 dark:text-gray-300">Discovering amazing events in Kolkata...</p>
+          <div className="relative mb-6">
+            <Calendar className="h-16 w-16 text-orange-600 mx-auto animate-spin" />
+            <div className="absolute inset-0 glow-orange rounded-full"></div>
+          </div>
+          <p className="text-xl text-gray-700 font-medium">Discovering amazing events in Kolkata...</p>
         </motion.div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-green-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen gradient-bg">
       {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-orange-100 dark:border-gray-800">
+      <header className="bg-white/90 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-orange-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-orange-600 mr-2" />
+              <div className="relative p-2 bg-gradient-to-br from-orange-100 to-green-100 rounded-xl mr-3">
+                <Calendar className="h-8 w-8 text-orange-600" />
+              </div>
               <Link href="/">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-green-600 dark:from-orange-400 dark:to-green-400 bg-clip-text text-transparent">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-green-600 bg-clip-text text-transparent">
                   Kolkata Events
                 </h1>
               </Link>
@@ -175,14 +180,14 @@ export default function KolkataEventsPage() {
             <nav className="flex items-center space-x-4">
               <Link
                 href="/dashboard"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+                className="text-gray-700 hover:text-orange-600 transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-orange-50"
               >
                 Dashboard
               </Link>
               <Link href="/login">
                 <Button
                   variant="outline"
-                  className="border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950"
+                  className="border-orange-300 text-orange-700 hover:bg-orange-50 hover:border-orange-400 transition-all duration-300 font-medium shadow-sm"
                 >
                   Login
                 </Button>
@@ -200,8 +205,8 @@ export default function KolkataEventsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Events in Kolkata</h2>
-          <p className="text-gray-600 dark:text-gray-300">Discover amazing events happening across the City of Joy</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-3">Events in Kolkata</h2>
+          <p className="text-xl text-gray-700">Discover amazing events happening across the City of Joy</p>
         </motion.div>
 
         {/* Filters */}
@@ -227,8 +232,8 @@ export default function KolkataEventsPage() {
             <Card className="border-orange-100">
               <CardContent className="text-center py-12">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No events found</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">No events found</h3>
+                <p className="text-gray-600 mb-6">
                   Try adjusting your search criteria or check back later for new events in Kolkata
                 </p>
                 <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50">
@@ -253,7 +258,7 @@ export default function KolkataEventsPage() {
                 whileHover={{ y: -5 }}
                 className="h-full"
               >
-                <Card className="overflow-hidden hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 h-full flex flex-col border-orange-100 dark:border-gray-700 bg-white dark:bg-gray-800">
+                <Card className="overflow-hidden card-hover h-full flex flex-col gradient-card border-orange-200/50">
                   {event.image && (
                     <div className="aspect-video bg-gradient-to-br from-orange-100 to-green-100 relative overflow-hidden">
                       <img
@@ -277,31 +282,31 @@ export default function KolkataEventsPage() {
                       <Badge variant="secondary" className="bg-orange-100 text-orange-800">
                         {event.category}
                       </Badge>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-gray-600">
                         {new Date(event.date).toLocaleDateString("en-IN")}
                       </span>
                     </div>
                     <CardTitle className="text-xl line-clamp-2">{event.name}</CardTitle>
                     <CardDescription className="space-y-1">
-                      <div className="flex items-center text-gray-600 dark:text-gray-300">
+                      <div className="flex items-center text-gray-700">
                         <MapPin className="h-4 w-4 mr-1 flex-shrink-0 text-orange-500" />
                         <span className="truncate">{event.area}, Kolkata</span>
                       </div>
-                      <div className="flex items-center text-gray-600 dark:text-gray-300">
+                      <div className="flex items-center text-gray-700">
                         <Calendar className="h-4 w-4 mr-1 flex-shrink-0 text-green-500" />
                         <span className="truncate">{event.location}</span>
                       </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">{event.description}</p>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{event.description}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center text-sm text-gray-600">
                         <User className="h-4 w-4 mr-1" />
                         <span className="truncate">{event.organizerName || event.organizer}</span>
                       </div>
                       {event.rsvpCount !== undefined && (
-                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center text-sm text-gray-600">
                           <Users className="h-4 w-4 mr-1" />
                           <span>{event.rsvpCount}</span>
                         </div>

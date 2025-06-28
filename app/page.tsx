@@ -74,9 +74,9 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
+    <div className="min-h-screen gradient-bg">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-orange-100">
+      <header className="bg-white/90 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-orange-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <motion.div
@@ -85,31 +85,31 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="relative">
+              <div className="relative p-2 bg-gradient-to-br from-orange-100 to-green-100 rounded-xl">
                 <Calendar className="h-8 w-8 text-orange-600 mr-2" />
-                <Sparkles className="h-4 w-4 text-green-600 absolute -top-1 -right-1" />
+                <Sparkles className="h-4 w-4 text-green-600 absolute -top-1 -right-1 animate-pulse" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-green-600 bg-clip-text text-transparent ml-3">
                 Kolkata Events
               </h1>
             </motion.div>
             <nav className="flex items-center space-x-4">
               <Link
                 href="/events"
-                className="text-gray-600 hover:text-orange-600 transition-colors"
+                className="text-gray-700 hover:text-orange-600 transition-all duration-300 font-medium px-3 py-2 rounded-lg hover:bg-orange-50"
               >
                 Discover Events
               </Link>
               <Link href="/login">
                 <Button
                   variant="outline"
-                  className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                  className="border-orange-300 text-orange-700 hover:bg-orange-50 hover:border-orange-400 transition-all duration-300 font-medium shadow-sm"
                 >
                   Login
                 </Button>
               </Link>
               <Link href="/register">
-                <Button className="bg-gradient-to-r from-orange-600 to-green-600 hover:from-orange-700 hover:to-green-700">
+                <Button className="btn-primary text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300">
                   Join Now
                 </Button>
               </Link>
@@ -119,27 +119,30 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-100/20 to-green-100/20"></div>
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-100/40 via-white/20 to-green-100/40"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-orange-200 to-orange-100 rounded-full opacity-60 animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-br from-green-200 to-green-100 rounded-full opacity-60 animate-pulse" style={{ animationDelay: '1s' }}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6">
+            <h2 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-tight">
               Discover Amazing Events in{" "}
-              <span className="bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-green-600 bg-clip-text text-transparent relative">
                 Kolkata
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 to-green-400 rounded-full opacity-30"></div>
               </span>
             </h2>
-            <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+            <p className="mt-6 max-w-2xl mx-auto text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
               From cultural festivals to tech conferences, explore the vibrant event scene in the City of Joy. Connect
               with your community and create unforgettable memories.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center">
               <Link href="/events">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-orange-600 to-green-600 text-white px-8"
+                  className="btn-primary text-white px-10 py-4 text-lg font-semibold rounded-xl"
                 >
-                  <Calendar className="mr-2 h-5 w-5" />
+                  <Calendar className="mr-3 h-6 w-6" />
                   Explore Events
                 </Button>
               </Link>
@@ -147,9 +150,9 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-orange-200 px-8"
+                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 px-10 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:border-orange-400 hover:shadow-lg"
                 >
-                  <Plus className="mr-2 h-5 w-5" />
+                  <Plus className="mr-3 h-6 w-6" />
                   Create Event
                 </Button>
               </Link>
@@ -159,18 +162,19 @@ export default function HomePage() {
       </section>
 
       {/* Featured Events */}
-      <section className="py-16 bg-white/50">
+      <section className="py-20 bg-white/70 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-3xl font-extrabold text-gray-900 mb-4">Featured Events in Kolkata</h3>
-            <p className="text-lg text-gray-600">
+            <h3 className="text-4xl font-extrabold text-gray-900 mb-6">Featured Events in Kolkata</h3>
+            <p className="text-xl text-gray-700 max-w-2xl mx-auto">
               Don't miss these exciting upcoming events in the City of Joy
             </p>
+            <div className="mt-4 w-24 h-1 bg-gradient-to-r from-orange-400 to-green-400 rounded-full mx-auto"></div>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -183,23 +187,23 @@ export default function HomePage() {
                 whileHover={{ y: -5 }}
                 className="h-full"
               >
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col border-orange-100 bg-white">
+                <Card className="overflow-hidden card-hover h-full flex flex-col gradient-card border-orange-200/50 shadow-lg">
                   <div className="relative">
-                    <div className="aspect-video bg-gradient-to-br from-orange-100 to-green-100">
+                    <div className="aspect-video bg-gradient-to-br from-orange-100/80 to-green-100/80">
                       <img
                         src={event.image || "/placeholder.svg"}
                         alt={event.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-gradient-to-r from-orange-600 to-green-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center">
-                        <Star className="h-3 w-3 mr-1" />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-gradient-to-r from-orange-600 to-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center shadow-lg">
+                        <Star className="h-4 w-4 mr-2" />
                         Featured
                       </span>
                     </div>
-                    <div className="absolute top-3 right-3">
-                      <span className="bg-white/90 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">
+                    <div className="absolute top-4 right-4">
+                      <span className="bg-white/95 backdrop-blur-sm text-orange-700 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                         {event.category}
                       </span>
                     </div>
