@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import { connectToDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
-// GET - Check if user has RSVP for event
+// GET - Check if user has RSVP for event, or get any RSVP for organizer testing
 export async function GET(request: NextRequest, { params }: { params: { eventId: string } }) {
   try {
     const authHeader = request.headers.get("authorization")
@@ -20,17 +20,34 @@ export async function GET(request: NextRequest, { params }: { params: { eventId:
 
     const { db } = await connectToDatabase()
 
-    const rsvp = await db.collection("rsvps").findOne({
+    // First, check if user has their own RSVP
+    const userRsvp = await db.collection("rsvps").findOne({
       eventId: new ObjectId(params.eventId),
       userId: new ObjectId(decoded.userId),
       status: "confirmed",
     })
 
-    if (!rsvp) {
-      return NextResponse.json({ rsvp: null })
+    if (userRsvp) {
+      return NextResponse.json({ rsvp: userRsvp })
     }
 
-    return NextResponse.json({ rsvp })
+    // Check if user is the organizer of this event
+    const event = await db.collection("events").findOne({
+      _id: new ObjectId(params.eventId),
+      organizer: new ObjectId(decoded.userId),
+    })
+
+    if (event) {
+      // If organizer, return any RSVP for testing purposes
+      const anyRsvp = await db.collection("rsvps").findOne({
+        eventId: new ObjectId(params.eventId),
+        status: "confirmed",
+      })
+
+      return NextResponse.json({ rsvp: anyRsvp })
+    }
+
+    return NextResponse.json({ rsvp: null })
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 })

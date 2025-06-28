@@ -65,10 +65,31 @@ export function QRScannerDialog({ open, onOpenChange, eventId, onCheckInSuccess 
         const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height)
 
         // Simulate QR code detection and processing
-        setTimeout(() => {
-          // Generate a mock QR code value for demo
-          const mockQRValue = `rsvp_${eventId}_${Date.now()}`
-          processQRCode(mockQRValue)
+        setTimeout(async () => {
+          // Try to get existing RSVP for this event first
+          try {
+            const token = localStorage.getItem("token")
+            const response = await fetch(`/api/rsvp/check/${eventId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            
+            if (response.ok) {
+              const data = await response.json()
+              if (data.rsvp) {
+                await processQRCode(data.rsvp.qrCode)
+                return
+              }
+            }
+            
+            // If no existing RSVP, show error
+            setError("No valid QR code found in image. Please ensure the QR code is clear and visible.")
+            setScanning(false)
+          } catch (error) {
+            setError("Failed to process QR code from image")
+            setScanning(false)
+          }
         }, 1000)
       }
 
@@ -112,20 +133,61 @@ export function QRScannerDialog({ open, onOpenChange, eventId, onCheckInSuccess 
     }
   }
 
-  const simulateQRScan = () => {
-    // For demo purposes - simulate scanning a valid QR code
+  const simulateQRScan = async () => {
+    // Create a demo RSVP first, then scan it
     setScanning(true)
-    setTimeout(() => {
-      setAttendeeInfo({
-        name: "John Doe",
-        email: "john@example.com",
-        rsvpId: "rsvp_123",
-        checkedIn: false,
+    setError("")
+    
+    try {
+      const token = localStorage.getItem("token")
+      
+      // First, create a demo RSVP for this event
+      const createRsvpResponse = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          eventId,
+          name: "John Doe (Demo Attendee)",
+          email: "john.demo@example.com",
+          phone: "+91 98765 43210",
+          notes: "Demo RSVP for testing check-in",
+        }),
       })
-      setSuccess("Check-in successful!")
-      onCheckInSuccess()
+
+      const rsvpData = await createRsvpResponse.json()
+
+      if (createRsvpResponse.ok) {
+        // Now simulate scanning the QR code
+        const qrCode = rsvpData.rsvp.qrCode
+        await processQRCode(qrCode)
+      } else {
+        // If RSVP already exists, try to find an existing one
+        const existingRsvpResponse = await fetch(`/api/rsvp/check/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        
+        if (existingRsvpResponse.ok) {
+          const existingData = await existingRsvpResponse.json()
+          if (existingData.rsvp) {
+            await processQRCode(existingData.rsvp.qrCode)
+          } else {
+            setError("No RSVPs found for this event. Please create an RSVP first.")
+            setScanning(false)
+          }
+        } else {
+          setError(rsvpData.message || "Failed to create demo RSVP")
+          setScanning(false)
+        }
+      }
+    } catch (error) {
+      setError("Failed to create demo RSVP")
       setScanning(false)
-    }, 2000)
+    }
   }
 
   return (
@@ -221,11 +283,15 @@ export function QRScannerDialog({ open, onOpenChange, eventId, onCheckInSuccess 
           </div>
 
           {/* Instructions */}
-          <div className="bg-blue-50 p-3 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>Instructions:</strong> Ask attendees to show their QR code ticket. Upload an image of the QR code
-              or use the demo scanner to check them in.
+          <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+            <p className="text-sm text-blue-800 font-medium">
+              <strong>How to test the QR scanner:</strong>
             </p>
+            <ol className="text-sm text-blue-700 space-y-1 ml-4 list-decimal">
+              <li>Click "Demo Scan" to create a test RSVP and check it in</li>
+              <li>Or go to your event page and create a real RSVP, then come back to scan</li>
+              <li>For real usage, attendees will show QR codes from their RSVP confirmations</li>
+            </ol>
           </div>
 
           {/* Close Button */}

@@ -36,7 +36,11 @@ export async function POST(request: NextRequest) {
     })
 
     if (existingRSVP) {
-      return NextResponse.json({ message: "You have already RSVP'd to this event" }, { status: 400 })
+      // Return the existing RSVP instead of an error for demo purposes
+      return NextResponse.json({
+        message: "RSVP already exists",
+        rsvp: existingRSVP,
+      })
     }
 
     // Generate unique QR code
