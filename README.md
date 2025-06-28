@@ -10,7 +10,7 @@
 
 *A modern, full-featured event management platform that brings Kolkata's vibrant event scene to your fingertips. Built with cutting-edge technology for seamless event creation, discovery, and management.*
 
-[🚀 Live Demo](https://your-demo-url.vercel.app) • [📖 Documentation](#-quick-start) • [🐛 Report Bug](https://github.com/koustavx08/event-organizer/issues) • [✨ Request Feature](https://github.com/koustavx08/event-organizer/issues)
+[🚀 Live Demo](https://event-organizer-koustavx08.vercel.app/) • [📖 Documentation](#-quick-start) • [🐛 Report Bug](https://github.com/koustavx08/event-organizer/issues) • [✨ Request Feature](https://github.com/koustavx08/event-organizer/issues)
 
 </div>
 
@@ -88,7 +88,7 @@
 </tr>
 </table>
 
-## � Quick Start
+## 🔧 Quick Start
 
 ### Prerequisites
 
@@ -99,8 +99,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/kolkata-events.git
-cd kolkata-events
+git clone https://github.com/koustavx08/event-organizer.git
+cd event-organizer
 ```
 
 ### 2. Install Dependencies

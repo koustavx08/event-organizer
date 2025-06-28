@@ -162,6 +162,10 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.text-shadow-white {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* Enhanced focus states */
 .focus-enhanced:focus {
   outline: none;

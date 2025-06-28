@@ -118,11 +118,9 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-24 relative overflow-hidden">
+      {/* Introduction Section */}
+      <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-100/40 via-white/20 to-green-100/40"></div>
-        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-orange-200 to-orange-100 rounded-full opacity-60 animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-br from-green-200 to-green-100 rounded-full opacity-60 animate-pulse" style={{ animationDelay: '1s' }}></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <h2 className="text-5xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-tight">
@@ -154,6 +152,42 @@ export default function HomePage() {
                 >
                   <Plus className="mr-3 h-6 w-6" />
                   Create Event
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hero Section */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/90 via-yellow-300/80 to-green-500/90"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-orange-200 to-orange-100 rounded-full opacity-60 animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-24 h-24 bg-gradient-to-br from-green-200 to-green-100 rounded-full opacity-60 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-8 leading-tight text-shadow-white">
+              Ready to Explore Kolkata's Event Scene?
+            </h2>
+            <p className="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-white/90 leading-relaxed text-shadow-white">
+              Join thousands of Kolkatans discovering amazing events every day
+            </p>
+            <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center">
+              <Link href="/events">
+                <Button
+                  size="lg"
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-10 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Get Started Free
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white text-white hover:bg-white/10 px-10 py-4 text-lg font-semibold rounded-xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
+                >
+                  Browse Events
                 </Button>
               </Link>
             </div>
@@ -354,108 +388,79 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-green-600">
+      {/* Footer-style CTA Section */}
+      <section className="py-16 bg-gray-800 text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h3 className="text-3xl font-extrabold text-white mb-4">Ready to Explore Kolkata's Event Scene?</h3>
-            <p className="text-xl text-orange-100 mb-8">
-              Join thousands of Kolkatans discovering amazing events every day
+            <div className="flex items-center justify-center mb-6">
+              <Calendar className="h-8 w-8 text-orange-400 mr-3" />
+              <h3 className="text-2xl font-bold">Kolkata Events</h3>
+            </div>
+            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+              Your premier destination for discovering and organizing events in Kolkata, West Bengal. Connecting the City of Joy through amazing experiences.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register">
-                <Button
-                  size="lg"
-                  className="bg-white text-orange-600 hover:bg-orange-50 px-8"
-                >
-                  Get Started Free
-                </Button>
-              </Link>
-              <Link href="/events">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white/10 px-8"
-                >
-                  Browse Events
-                </Button>
-              </Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              <div>
+                <h4 className="text-lg font-semibold mb-4 text-orange-400">Platform</h4>
+                <ul className="space-y-2 text-gray-300">
+                  <li>
+                    <Link href="/events" className="hover:text-white transition-colors">
+                      Browse Events
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard" className="hover:text-white transition-colors">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/create-event" className="hover:text-white transition-colors">
+                      Create Event
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/about" className="hover:text-white transition-colors">
+                      About Us
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4 text-orange-400">Support</h4>
+                <ul className="space-y-2 text-gray-300">
+                  <li>
+                    <Link href="/help" className="hover:text-white transition-colors">
+                      Help Center
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="hover:text-white transition-colors">
+                      Contact Us
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/privacy" className="hover:text-white transition-colors">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/terms" className="hover:text-white transition-colors">
+                      Terms of Service
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-4 text-orange-400">Made with ❤️ for Kolkata</h4>
+                <p className="text-sm text-gray-400 mb-4">
+                  &copy; 2024 Kolkata Events. All rights reserved. Proudly serving the City of Joy.
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center mb-4">
-                <Calendar className="h-8 w-8 text-orange-400 mr-2" />
-                <h3 className="text-xl font-bold">Kolkata Events</h3>
-              </div>
-              <p className="text-gray-400 mb-4">
-                Your premier destination for discovering and organizing events in Kolkata, West Bengal. Connecting the
-                City of Joy through amazing experiences.
-              </p>
-              <p className="text-sm text-gray-500">Made with ❤️ for Kolkata</p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/events" className="hover:text-white transition-colors">
-                    Browse Events
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard" className="hover:text-white transition-colors">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/create-event" className="hover:text-white transition-colors">
-                    Create Event
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-white transition-colors">
-                    About Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/help" className="hover:text-white transition-colors">
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors">
-                    Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-white transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="hover:text-white transition-colors">
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Kolkata Events. All rights reserved. Proudly serving the City of Joy.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
