@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   description:
     "Find and organize events in Kolkata, West Bengal. From cultural festivals to tech conferences, discover what's happening in the City of Joy.",
   keywords: "Kolkata events, West Bengal events, City of Joy, cultural festivals, tech conferences, Durga Puja",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.svg', sizes: '180x180', type: 'image/svg+xml' }
+    ],
+  },
 }
 
 export default function RootLayout({
